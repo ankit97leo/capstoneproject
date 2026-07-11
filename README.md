@@ -80,3 +80,11 @@ Each student must submit:
 • Grafana dashboard screenshots
 • Architecture diagram
 • Working demo of deployed application
+
+
+
+## Known Issues
+
+Currently, the application requires a one-time manual schema import after the first deployment.
+
+See [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for details.

@@ -1,16 +1,13 @@
-
-CREATE DATABASE ecommerce;
-
 USE ecommerce;
 
-CREATE TABLE products (
+CREATE TABLE IF NOT EXISTS products (
  id INT AUTO_INCREMENT PRIMARY KEY,
  name VARCHAR(255),
  price DECIMAL(10,2),
  stock INT
 );
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
  id INT AUTO_INCREMENT PRIMARY KEY,
  product_id INT,
  quantity INT,
@@ -18,7 +15,7 @@ CREATE TABLE orders (
  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE inventory (
+CREATE TABLE IF NOT EXISTS inventory (
  product_id INT PRIMARY KEY,
  stock INT
 );
