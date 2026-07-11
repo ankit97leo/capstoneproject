@@ -7,11 +7,11 @@ const app=express()
 app.use(express.json())
 app.use(cors())
 
-const db=mysql.createConnection({
- host:"mysql",
- user:"root",
- password:"password",
- database:"ecommerce"
+const db = mysql.createConnection({
+  host: process.env.DB_HOST || "mysql",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "password",
+  database: process.env.DB_NAME || "ecommerce"
 })
 
 app.get("/inventory",(req,res)=>{
