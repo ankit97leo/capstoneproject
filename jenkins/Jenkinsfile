@@ -66,6 +66,16 @@ pipeline {
                 '''
             }
         }
+        stage('Validate Docker Images') {
+            steps {
+                sh '''
+            docker run --rm ankit97leo/product-service:jenkins-${BUILD_NUMBER} node --version
+            docker run --rm ankit97leo/order-service:jenkins-${BUILD_NUMBER} node --version
+            docker run --rm ankit97leo/inventory-service:jenkins-${BUILD_NUMBER} node --version
+            docker run --rm ankit97leo/frontend:jenkins-${BUILD_NUMBER} node --version
+        '''
+    }
+        }
     }
 
     post {
