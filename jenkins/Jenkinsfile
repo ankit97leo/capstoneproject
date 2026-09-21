@@ -22,6 +22,17 @@ pipeline {
                 sh 'docker ps'
             }
         }
+
+        stage('Build Product Service') {
+            steps {
+                sh '''
+                    docker build \
+                      -t ankit97leo/product-service:jenkins-${BUILD_NUMBER} \
+                      -f docker/backend.Dockerfile \
+                      ./product-service
+                '''
+            }
+        }
     }
 
     post {
