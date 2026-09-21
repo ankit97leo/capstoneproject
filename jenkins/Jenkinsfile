@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Verify Project') {
+            steps {
+                sh 'echo "Jenkins successfully checked out the capstone project"'
+                sh 'ls -la'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'CI pipeline completed successfully.'
+        }
+
+        failure {
+            echo 'CI pipeline failed.'
+        }
+    }
+}
