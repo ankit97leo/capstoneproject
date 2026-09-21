@@ -33,11 +33,44 @@ pipeline {
                 '''
             }
         }
+
+        stage('Build Order Service') {
+            steps {
+                sh '''
+                    docker build \
+                      -t ankit97leo/order-service:jenkins-${BUILD_NUMBER} \
+                      -f docker/backend.Dockerfile \
+                      ./order-service
+                '''
+            }
+        }
+
+        stage('Build Inventory Service') {
+            steps {
+                sh '''
+                    docker build \
+                      -t ankit97leo/inventory-service:jenkins-${BUILD_NUMBER} \
+                      -f docker/backend.Dockerfile \
+                      ./inventory-service
+                '''
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                sh '''
+                    docker build \
+                      -t ankit97leo/frontend:jenkins-${BUILD_NUMBER} \
+                      -f docker/frontend.Dockerfile \
+                      ./frontend
+                '''
+            }
+        }
     }
 
     post {
         success {
-            echo 'CI pipeline completed successfully.'
+            echo 'All application Docker images built successfully.'
         }
 
         failure {
