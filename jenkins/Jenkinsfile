@@ -75,6 +75,31 @@ pipeline {
             docker run --rm ankit97leo/frontend:jenkins-${BUILD_NUMBER} node --version
         '''
     }
+        
+        }
+        stage('Push Images to Docker Hub') {
+    steps {
+        withCredentials([
+            usernamePassword(
+                credentialsId: 'dockerhub-credentials',
+                usernameVariable: 'DOCKER_USERNAME',
+                passwordVariable: 'DOCKER_PASSWORD'
+            )
+        ]) {
+            sh '''
+                echo "$DOCKER_PASSWORD" | docker login \
+                    -u "$DOCKER_USERNAME" \
+                    --password-stdin
+
+                docker push ankit97leo/product-service:jenkins-${BUILD_NUMBER}
+                docker push ankit97leo/order-service:jenkins-${BUILD_NUMBER}
+                docker push ankit97leo/inventory-service:jenkins-${BUILD_NUMBER}
+                docker push ankit97leo/frontend:jenkins-${BUILD_NUMBER}
+
+                docker logout
+            '''
+        }
+    }
         }
     }
 
