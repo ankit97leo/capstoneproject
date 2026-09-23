@@ -3,6 +3,7 @@ const mysql = require("mysql2")
 const cors = require("cors")
 
 const app = express()
+
 app.use(express.json())
 app.use(cors())
 
@@ -13,31 +14,49 @@ const db = mysql.createConnection({
   database: process.env.DB_NAME || "ecommerce"
 })
 
-app.get("/products",(req,res)=>{
-  db.query("SELECT * FROM products",(err,result)=>{
-    if(err) throw err
+// Get all products
+app.get(["/products", "/api/products"], (req, res) => {
+  db.query("SELECT * FROM products", (err, result) => {
+    if (err) throw err
+
     res.json(result)
   })
 })
 
-app.post("/products",(req,res)=>{
-  const {name,price,stock}=req.body
-  db.query("INSERT INTO products(name,price,stock) VALUES (?,?,?)",
-  [name,price,stock],(err)=>{
-    if(err) throw err
-    res.json({message:"product created"})
-  })
+// Create a product
+app.post(["/products", "/api/products"], (req, res) => {
+  const { name, price, stock } = req.body
+
+  db.query(
+    "INSERT INTO products(name,price,stock) VALUES (?,?,?)",
+    [name, price, stock],
+    (err) => {
+      if (err) throw err
+
+      res.json({ message: "product created" })
+    }
+  )
 })
 
-app.delete("/products/:id",(req,res)=>{
-  db.query("DELETE FROM products WHERE id=?",[req.params.id],(err)=>{
-    if(err) throw err
-    res.json({message:"deleted"})
-  })
+// Delete a product
+app.delete(["/products/:id", "/api/products/:id"], (req, res) => {
+  db.query(
+    "DELETE FROM products WHERE id=?",
+    [req.params.id],
+    (err) => {
+      if (err) throw err
+
+      res.json({ message: "deleted" })
+    }
+  )
 })
 
-app.get("/health",(req,res)=>{
-  res.json({status:"ok"})
+// Health check
+app.get("/health", (req, res) => {
+  res.json({ status: "ok" })
 })
 
-app.listen(5000,()=>console.log("product service running"))
+// Start server
+app.listen(5000, () => {
+  console.log("product service running")
+})
