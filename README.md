@@ -45,6 +45,7 @@ The repository will NOT contain:
 Students must design and implement these components themselves.
 DevOps Tasks To Implement
 Students must implement the following DevOps components:
+
 1. Git Workflow
 • Fork or clone the provided repository
 • Maintain commits and version control
@@ -83,8 +84,13 @@ Each student must submit:
 
 
 
+<!-- CI pipeline test -->
+
+
+
 ## Known Issues
 
 Currently, the application requires a one-time manual schema import after the first deployment.
 
-See [KNOWN_ISSUES.md](KNOWN_ISSUES.md) for details.
+See [KNOWN\_ISSUES.md](KNOWN_ISSUES.md) for details.
+
