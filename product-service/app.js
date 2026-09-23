@@ -1,4 +1,3 @@
-
 const express = require("express")
 const mysql = require("mysql2")
 const cors = require("cors")
@@ -35,6 +34,10 @@ app.delete("/products/:id",(req,res)=>{
     if(err) throw err
     res.json({message:"deleted"})
   })
+})
+
+app.get("/health",(req,res)=>{
+  res.json({status:"ok"})
 })
 
 app.listen(5000,()=>console.log("product service running"))
