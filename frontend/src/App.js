@@ -1,74 +1,96 @@
-
-import React,{useEffect,useState} from "react"
+import React, { useEffect, useState } from "react"
 import axios from "axios"
 
-function App(){
+function App() {
+  const [products, setProducts] = useState([])
+  const [orders, setOrders] = useState([])
 
-const [products,setProducts]=useState([])
-const [orders,setOrders]=useState([])
+  const [name, setName] = useState("")
+  const [price, setPrice] = useState("")
+  const [stock, setStock] = useState("")
 
-const [name,setName]=useState("")
-const [price,setPrice]=useState("")
-const [stock,setStock]=useState("")
+  const loadProducts = async () => {
+    const res = await axios.get("/api/products")
+    setProducts(res.data)
+  }
 
-const loadProducts=async()=>{
- const res=await axios.get("http://localhost:5000/products")
- setProducts(res.data)
-}
+  const loadOrders = async () => {
+    const res = await axios.get("/api/orders")
+    setOrders(res.data)
+  }
 
-const loadOrders=async()=>{
- const res=await axios.get("http://localhost:5001/orders")
- setOrders(res.data)
-}
+  useEffect(() => {
+    loadProducts()
+    loadOrders()
+  }, [])
 
-useEffect(()=>{
- loadProducts()
- loadOrders()
-},[])
+  const addProduct = async () => {
+    await axios.post("/api/products", {
+      name,
+      price,
+      stock
+    })
 
-const addProduct=async()=>{
- await axios.post("http://localhost:5000/products",{name,price,stock})
- loadProducts()
-}
+    loadProducts()
+  }
 
-const createOrder=async(id)=>{
- await axios.post("http://localhost:5001/orders",{product_id:id,quantity:1})
- loadOrders()
-}
+  const createOrder = async (id) => {
+    await axios.post("/api/orders", {
+      product_id: id,
+      quantity: 1
+    })
 
-return(
-<div style={{padding:40}}>
-<h2>Ecommerce Platform</h2>
+    loadOrders()
+  }
 
-<h3>Add Product</h3>
+  return (
+    <div style={{ padding: 40 }}>
+      <h2>Ecommerce Platform</h2>
 
-<input placeholder="name" onChange={e=>setName(e.target.value)}/>
-<input placeholder="price" onChange={e=>setPrice(e.target.value)}/>
-<input placeholder="stock" onChange={e=>setStock(e.target.value)}/>
+      <h3>Add Product</h3>
 
-<button onClick={addProduct}>Add</button>
+      <input
+        placeholder="name"
+        onChange={e => setName(e.target.value)}
+      />
 
-<h3>Products</h3>
-<ul>
-{products.map(p=>(
-<li key={p.id}>
-{p.name} ₹{p.price} stock:{p.stock}
-<button onClick={()=>createOrder(p.id)}>Order</button>
-</li>
-))}
-</ul>
+      <input
+        placeholder="price"
+        onChange={e => setPrice(e.target.value)}
+      />
 
-<h3>Orders</h3>
-<ul>
-{orders.map(o=>(
-<li key={o.id}>
-Order #{o.id} product:{o.product_id}
-</li>
-))}
-</ul>
+      <input
+        placeholder="stock"
+        onChange={e => setStock(e.target.value)}
+      />
 
-</div>
-)
+      <button onClick={addProduct}>Add</button>
+
+      <h3>Products</h3>
+
+      <ul>
+        {products.map(p => (
+          <li key={p.id}>
+            {p.name} ₹{p.price} stock:{p.stock}
+
+            <button onClick={() => createOrder(p.id)}>
+              Order
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <h3>Orders</h3>
+
+      <ul>
+        {orders.map(o => (
+          <li key={o.id}>
+            Order #{o.id} product:{o.product_id}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )
 }
 
 export default App
