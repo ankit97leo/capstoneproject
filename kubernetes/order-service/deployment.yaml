@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: order-service
+  namespace: ecommerce
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: order-service
+
+  template:
+    metadata:
+      labels:
+        app: order-service
+
+    spec:
+      containers:
+        - name: order-service
+          image: ankit97leo/order-service:jenkins-15
+
+          ports:
+            - containerPort: 5001
+
+          env:
+            - name: DB_HOST
+              value: mysql
+
+            - name: DB_USER
+              value: root
+
+            - name: DB_PASSWORD
+              value: password
+
+            - name: DB_NAME
+              value: ecommerce

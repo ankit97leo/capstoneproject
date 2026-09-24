@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: inventory-service
+  namespace: ecommerce
+
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: inventory-service
+
+  template:
+    metadata:
+      labels:
+        app: inventory-service
+
+    spec:
+      containers:
+        - name: inventory-service
+          image: ankit97leo/inventory-service:jenkins-12
+
+          ports:
+            - containerPort: 5002
+
+          env:
+            - name: DB_HOST
+              value: mysql
+
+            - name: DB_USER
+              value: root
+
+            - name: DB_PASSWORD
+              value: password
+
+            - name: DB_NAME
+              value: ecommerce
